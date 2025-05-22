@@ -1,0 +1,48 @@
+libname bios500 "S:\course\BIOS500\Binongo\2023_lab\Datasets";
+data work.serum;
+mu = 206;
+sigma= 44.7;
+do serum= (mu-sigma*3) to (mu+sigma*3) by 50;
+y=pdf ("normal", serum, mu, sigma);
+output;
+end;
+run;
+proc sgplot data=work.serum;
+scatter x=serum y=y;
+xaxis label = "Serum total Cholesterol Level (mg/dL)"
+grid values=(71.9 to 340.1 by 44.7);
+run;
+proc sgplot data=serum noautolegend;
+pbspline x=serum y=y /nomarkers;
+xaxis label="Serum total Cholesterol Level (mg/dL)"
+grid values=(71.9 to 340.1 by 44.7);
+run;
+data calc;
+p=cdf ("normal", (220-206)/44.7);
+run;
+proc print data=calc;
+run;
+*p=0.62294;
+data calc;
+x=quantile ("norm", 0.4, 206, 44.7);
+run;
+proc print data=calc;
+run;
+*x=194.675;
+data calc;
+x=quantile ("norm", 0.8, 206, 44.7);
+run;
+proc print data=calc;
+run;
+*x=243.620;
+data calc;
+x=quantile ("norm", 0.2, 206, 44.7);
+run;
+proc print data=calc;
+run;
+*x=168.380;
+
+libname bios500 "S:\course\BIOS500\Binongo\2023_lab\Datasets";
+proc freq data=tmp3.patients;
+tables smoker*cld;
+run;
